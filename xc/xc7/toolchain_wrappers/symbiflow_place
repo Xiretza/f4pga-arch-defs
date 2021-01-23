@@ -7,7 +7,7 @@ parse_args "$@"
 
 PCF=${PCF:=}
 
-if [ -z $NET ]; then
+if [[ -z $NET ]]; then
      echo "Please provide net file name"
      exit 1
 fi

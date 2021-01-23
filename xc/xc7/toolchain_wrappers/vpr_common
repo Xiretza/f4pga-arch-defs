@@ -2,7 +2,7 @@
 
 SHARE_DIR_PATH=${SHARE_DIR_PATH:=$(realpath $(dirname "$0")/../share/symbiflow)}
 
-if [ -z $VPR_OPTIONS ]; then
+if [[ -z $VPR_OPTIONS ]]; then
      echo "Using default VPR options."
      # These hardcoded default options are optimised for Xilinx 7 Series.
      # See https://github.com/SymbiFlow/f4pga-arch-defs/blob/main/xc/common/cmake/arch_define.cmake#L65-L97
@@ -87,19 +87,19 @@ function parse_args {
           esac
      done
 
-     if [ -z $DEVICE ] && [ -n $PART ]; then
+     if [[ -z $DEVICE ]] && [[ -n $PART ]]; then
           # Try to find device name. Accept only when exactly one is found
           PART_DIRS=(${SHARE_DIR_PATH}/arch/*/${PART})
-          if [ ${#PART_DIRS[@]} -eq 1 ]; then
+          if [[ ${#PART_DIRS[@]} -eq 1 ]]; then
                DEVICE=$(basename $(dirname "${PART_DIRS[0]}"))
           fi
      fi
-     if [ -z $DEVICE ]; then
+     if [[ -z $DEVICE ]]; then
           echo "Please provide device name"
           exit 1
      fi
 
-     if [ -z $EBLIF ]; then
+     if [[ -z $EBLIF ]]; then
           echo "Please provide blif file name"
           exit 1
      fi
@@ -124,7 +124,7 @@ function run_vpr {
      set -e
 
      SDC_OPTIONS=""
-     if [ ! -z $SDC ]
+     if [[ ! -z $SDC ]]
      then
           SDC_OPTIONS="--sdc_file $SDC"
      fi
