@@ -115,7 +115,8 @@ function parse_args {
 
      export DEVICE EBLIF PCF NET SDC
 
-     export ARCH_DIR=$(realpath "${SHARE_DIR_PATH}/arch/$DEVICE")
+     ARCH_DIR=$(realpath "${SHARE_DIR_PATH}/arch/$DEVICE")
+     export ARCH_DIR
      export ARCH_DEF=${ARCH_DIR}/arch.timing.xml
      export LOOKAHEAD=${ARCH_DIR}/rr_graph_${DEVICE}.lookahead.bin
      export RR_GRAPH=${ARCH_DIR}/rr_graph_${DEVICE}.rr_graph.real.bin
