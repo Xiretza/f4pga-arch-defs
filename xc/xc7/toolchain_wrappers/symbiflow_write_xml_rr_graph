@@ -2,7 +2,7 @@
 
 set -eu
 
-source $(dirname $(realpath $0))/vpr_common
+source "$(dirname "$(realpath "$0")")/vpr_common"
 parse_args "$@"
 
 OUT_NOISY_WARNINGS=noisy_warnings-${DEVICE}_place.log

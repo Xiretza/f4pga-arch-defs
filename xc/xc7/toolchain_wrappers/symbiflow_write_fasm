@@ -2,7 +2,7 @@
 
 set -eu
 
-source $(dirname $(realpath $0))/vpr_common
+source "$(dirname "$(realpath "$0")")/vpr_common"
 parse_args "$@"
 
 TOP="${EBLIF%.*}"
@@ -15,8 +15,8 @@ run_genfasm
 echo "FASM extra: $FASM_EXTRA"
 if [[ -f $FASM_EXTRA ]]; then
 	echo "writing final fasm"
-	cat ${TOP}.fasm $FASM_EXTRA > tmp.fasm
-	mv tmp.fasm ${TOP}.fasm
+	cat "${TOP}.fasm" "$FASM_EXTRA" > tmp.fasm
+	mv tmp.fasm "${TOP}.fasm"
 fi
 
 mv vpr_stdout.log fasm.log

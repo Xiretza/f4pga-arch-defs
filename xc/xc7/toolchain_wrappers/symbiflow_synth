@@ -2,7 +2,7 @@
 
 set -eu
 
-export SHARE_DIR_PATH=${SHARE_DIR_PATH:=$(realpath $(dirname "$0")/../share/symbiflow)}
+export SHARE_DIR_PATH=${SHARE_DIR_PATH:=$(realpath "$(dirname "$0")/../share/symbiflow")}
 export TECHMAP_PATH=${SHARE_DIR_PATH}/techmaps/xc7_vpr/techmap
 
 export UTILS_PATH=${SHARE_DIR_PATH}/scripts
@@ -22,8 +22,8 @@ DEVICENAME=0
 PARTNAME=0
 SURELOG=0
 
-for arg in $@; do
-  echo $arg
+for arg in "$@"; do
+  echo "$arg"
   case "$arg" in
     -t|--top)
       echo "adding top"
@@ -76,9 +76,9 @@ for arg in $@; do
       ;;
     *)
       if [[ $VERILOGLIST -eq 1 ]]; then
-        VERILOG_FILES+=($arg)
+        VERILOG_FILES+=("$arg")
       elif [[ $XDCLIST -eq 1 ]]; then
-        XDC_FILES+=($arg)
+        XDC_FILES+=("$arg")
       elif [[ $TOPNAME -eq 1 ]]; then
         TOP=$arg
       elif [[ $DEVICENAME -eq 1 ]]; then
@@ -86,7 +86,7 @@ for arg in $@; do
       elif [[ $PARTNAME -eq 1 ]]; then
         PART=$arg
       elif [[ $SURELOG -eq 1 ]]; then
-        SURELOG_CMD+=($arg)
+        SURELOG_CMD+=("$arg")
       else
         echo "Usage: synth [-t|--top <top module name> -v|--verilog <Verilog files list> [-x|--xdc <XDC files list>]"
         echo "             [-d|--device <device type (e.g. artix7)>] [-p|--part <part name>] [-s|--surelog] <parameters to surelog>"
@@ -112,16 +112,16 @@ export OUT_SDC=${TOP}.sdc
 export SYNTH_JSON=${TOP}_io.json
 export OUT_SYNTH_V=${TOP}_synth.v
 export OUT_EBLIF=${TOP}.eblif
-export PART_JSON=$(realpath ${DATABASE_DIR}/$DEVICE/$PART/part.json)
+export PART_JSON=$(realpath "${DATABASE_DIR}/$DEVICE/$PART/part.json")
 export OUT_FASM_EXTRA=${TOP}_fasm_extra.fasm
 
 LOG=${TOP}_synth.log
 
 if [[ ${#SURELOG_CMD[@]} -eq 0 ]]; then
-  yosys -p "tcl ${SYNTH_TCL_PATH}" -l $LOG ${VERILOG_FILES[*]}
+  yosys -p "tcl ${SYNTH_TCL_PATH}" -l "$LOG" "${VERILOG_FILES[@]}"
 else
-  yosys -p "plugin -i uhdm" -p "read_verilog_with_uhdm ${SURELOG_CMD[*]} ${VERILOG_FILES[*]}" -p "tcl ${SYNTH_TCL_PATH}" -l $LOG
+  yosys -p "plugin -i uhdm" -p "read_verilog_with_uhdm ${SURELOG_CMD[*]} ${VERILOG_FILES[*]}" -p "tcl ${SYNTH_TCL_PATH}" -l "$LOG"
 fi
 
-python3 ${UTILS_PATH}/split_inouts.py -i ${OUT_JSON} -o ${SYNTH_JSON}
+python3 "${UTILS_PATH}/split_inouts.py" -i "${OUT_JSON}" -o "${SYNTH_JSON}"
 yosys -p "read_json $SYNTH_JSON; tcl ${UTILS_PATH}/xc7/conv.tcl"
