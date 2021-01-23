@@ -39,7 +39,7 @@ function parse_args {
      OPTS=d:e:p:n:P:s:a:
      LONGOPTS=device:,eblif:,pcf:,net:,part:,sdc:,additional_vpr_options:
 
-     PARSED_OPTS=`getopt --options=${OPTS} --longoptions=${LONGOPTS} --name $0 -- "$@"`
+     PARSED_OPTS=$(getopt --options=${OPTS} --longoptions=${LONGOPTS} --name $0 -- "$@")
      eval set -- "${PARSED_OPTS}"
 
      DEVICE=""
@@ -111,13 +111,13 @@ function parse_args {
      export SDC=$SDC
      export VPR_OPTIONS="$VPR_OPTIONS $ADDITIONAL_VPR_OPTIONS"
 
-     export ARCH_DIR=`realpath ${SHARE_DIR_PATH}/arch/$DEVICE`
+     export ARCH_DIR=$(realpath ${SHARE_DIR_PATH}/arch/$DEVICE)
      export ARCH_DEF=${ARCH_DIR}/arch.timing.xml
      export LOOKAHEAD=${ARCH_DIR}/rr_graph_${DEVICE}.lookahead.bin
      export RR_GRAPH=${ARCH_DIR}/rr_graph_${DEVICE}.rr_graph.real.bin
      export RR_GRAPH_XML=${ARCH_DIR}/rr_graph_${DEVICE}.rr_graph.real.xml
      export PLACE_DELAY=${ARCH_DIR}/rr_graph_${DEVICE}.place_delay.bin
-     export DEVICE_NAME=`echo $DEVICE | sed -n 's/_/-/p'`
+     export DEVICE_NAME=$(echo $DEVICE | sed -n 's/_/-/p')
 }
 
 function run_vpr {
