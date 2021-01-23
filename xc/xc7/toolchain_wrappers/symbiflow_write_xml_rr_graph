@@ -2,10 +2,10 @@
 
 set -eu
 
+OUT_NOISY_WARNINGS=noisy_warnings_rr_graph.log
+
 source "$(dirname "$(realpath "$0")")/vpr_common"
 parse_args "$@"
-
-OUT_NOISY_WARNINGS=noisy_warnings-${DEVICE}_place.log
 
 run_vpr_xml_rr_graph --pack
 

@@ -2,10 +2,10 @@
 
 set -eu
 
+OUT_NOISY_WARNINGS=noisy_warnings_pack.log
+
 source "$(dirname "$(realpath "$0")")/vpr_common"
 parse_args "$@"
-
-export OUT_NOISY_WARNINGS=noisy_warnings-${DEVICE}_pack.log
 
 run_vpr --pack
 

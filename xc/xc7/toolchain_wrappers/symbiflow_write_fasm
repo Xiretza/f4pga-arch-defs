@@ -2,13 +2,13 @@
 
 set -eu
 
+OUT_NOISY_WARNINGS=noisy_warnings_fasm.log
+
 source "$(dirname "$(realpath "$0")")/vpr_common"
 parse_args "$@"
 
 TOP="${EBLIF%.*}"
 FASM_EXTRA=${TOP}_fasm_extra.fasm
-
-export OUT_NOISY_WARNINGS=noisy_warnings-${DEVICE}_fasm.log
 
 run_genfasm
 
