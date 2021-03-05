@@ -4186,7 +4186,7 @@ endmodule
 module PLLE2_BASE
 (
 input         CLKFBIN,
-input         CLKIN,
+input         CLKIN1,
 
 output        CLKFBOUT,
 output        CLKOUT0,
@@ -4197,6 +4197,7 @@ output        CLKOUT4,
 output        CLKOUT5,
 
 input         RST,
+input         PWRDWN,
 output        LOCKED
 );
 
@@ -4283,7 +4284,7 @@ output        LOCKED
   _TECHMAP_REPLACE_
   (
   .CLKFBIN(CLKFBIN),
-  .CLKIN1(CLKIN),
+  .CLKIN1(CLKIN1),
   .CLKINSEL(1'b1),
 
   .CLKFBOUT(CLKFBOUT),
@@ -4294,7 +4295,7 @@ output        LOCKED
   .CLKOUT4(CLKOUT4),
   .CLKOUT5(CLKOUT5),
 
-  .PWRDWN(1'b0),
+  .PWRDWN(PWRDWN),
   .RST(RST),
   .LOCKED(LOCKED),
 
