@@ -5,7 +5,7 @@ set -eu
 echo "Writing bitstream ..."
 
 FRM2BIT=""
-if [[ ! -z ${FRAMES2BIT} ]]; then
+if [[ -n ${FRAMES2BIT} ]]; then
   FRM2BIT="--frm2bit ${FRAMES2BIT}"
 fi
 

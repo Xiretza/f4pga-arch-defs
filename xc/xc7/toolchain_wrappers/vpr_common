@@ -124,7 +124,7 @@ function run_vpr {
      set -e
 
      SDC_OPTIONS=""
-     if [[ ! -z $SDC ]]
+     if [[ -n $SDC ]]
      then
           SDC_OPTIONS="--sdc_file $SDC"
      fi
