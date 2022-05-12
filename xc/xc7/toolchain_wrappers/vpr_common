@@ -117,7 +117,7 @@ function parse_args {
      export RR_GRAPH=${ARCH_DIR}/rr_graph_${DEVICE}.rr_graph.real.bin
      export RR_GRAPH_XML=${ARCH_DIR}/rr_graph_${DEVICE}.rr_graph.real.xml
      export PLACE_DELAY=${ARCH_DIR}/rr_graph_${DEVICE}.place_delay.bin
-     export DEVICE_NAME=$(echo $DEVICE | sed -n 's/_/-/p')
+     export DEVICE_NAME=${DEVICE//_/-}
 }
 
 function run_vpr {
