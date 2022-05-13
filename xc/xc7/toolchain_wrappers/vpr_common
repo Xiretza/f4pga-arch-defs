@@ -6,7 +6,7 @@ if [[ -z ${VPR_OPTIONS:+} ]]; then
      echo "Using default VPR options."
      # These hardcoded default options are optimised for Xilinx 7 Series.
      # See https://github.com/SymbiFlow/f4pga-arch-defs/blob/main/xc/common/cmake/arch_define.cmake#L65-L97
-     VPR_OPTIONS="
+     VPR_OPTIONS=(
        --max_router_iterations 500
        --routing_failure_predictor off
        --router_high_fanout_threshold -1
@@ -31,7 +31,7 @@ if [[ -z ${VPR_OPTIONS:+} ]]; then
        --pres_fac_mult 1.2
        --check_rr_graph off
        --suppress_warnings ${OUT_NOISY_WARNINGS},sum_pin_class:check_unbuffered_edges:load_rr_indexed_data_T_values:check_rr_node:trans_per_R:check_route:set_rr_graph_tool_comment:calculate_average_switch
-     "
+     )
 fi
 
 function parse_args {
@@ -78,7 +78,8 @@ function parse_args {
                     shift 2
                     ;;
                -a|--additional_vpr_options)
-                    ADDITIONAL_VPR_OPTIONS="$2"
+                    read -ra ADDITIONAL_VPR_OPTIONS <<<"$2"
+                    VPR_OPTIONS+=("${ADDITIONAL_VPR_OPTIONS[@]}")
                     shift 2
 		    ;;
                --)
@@ -109,7 +110,7 @@ function parse_args {
      export PCF=$PCF
      export NET=$NET
      export SDC=$SDC
-     export VPR_OPTIONS="$VPR_OPTIONS $ADDITIONAL_VPR_OPTIONS"
+     export VPR_OPTIONS="${VPR_OPTIONS[*]}"
 
      export ARCH_DIR=$(realpath ${SHARE_DIR_PATH}/arch/$DEVICE)
      export ARCH_DEF=${ARCH_DIR}/arch.timing.xml
@@ -123,10 +124,10 @@ function parse_args {
 function run_vpr {
      set -e
 
-     SDC_OPTIONS=""
+     SDC_OPTIONS=()
      if [[ -n $SDC ]]
      then
-          SDC_OPTIONS="--sdc_file $SDC"
+          SDC_OPTIONS=(--sdc_file "${SDC}")
      fi
 
      vpr ${ARCH_DEF} \
@@ -136,7 +137,7 @@ function run_vpr {
          --read_rr_graph ${RR_GRAPH} \
          --read_router_lookahead ${LOOKAHEAD} \
          --read_placement_delay_lookup ${PLACE_DELAY} \
-         ${SDC_OPTIONS} \
+         "${SDC_OPTIONS[@]}" \
          $@
 
      return $?
@@ -148,7 +149,7 @@ function run_genfasm {
      genfasm ${ARCH_DEF} \
          ${EBLIF} \
          --device ${DEVICE_NAME} \
-         ${VPR_OPTIONS} \
+         "${VPR_OPTIONS[@]}" \
          --read_rr_graph ${RR_GRAPH} \
          $@
 

@@ -9,8 +9,9 @@ DEVICE=$4
 ARCH_DEF=$5
 PCF=$6
 
+PCF_OPTS=()
 if [[ -n $PCF ]]; then
-    PCF_OPTS="--pcf $PCF"
+    PCF_OPTS+=(--pcf "${PCF}")
 fi
 
 DATABASE_DIR=${DATABASE_DIR:=$(prjxray-config)}
@@ -28,7 +29,7 @@ python3 ${IOGEN} \
   --blif $EBLIF \
   --map $PINMAP \
   --net $NET \
-  $PCF_OPTS \
+  "${PCF_OPTS[@]}" \
   > ${IOPLACE_FILE}
 
 python3 ${CONSTR_GEN} \

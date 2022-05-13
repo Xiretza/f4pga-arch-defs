@@ -4,9 +4,9 @@ set -eu
 
 echo "Writing bitstream ..."
 
-FRM2BIT=""
+FRM2BIT=()
 if [[ -n ${FRAMES2BIT} ]]; then
-  FRM2BIT="--frm2bit ${FRAMES2BIT}"
+  FRM2BIT=(--frm2bit "${FRAMES2BIT}")
 fi
 
 OPTS=d:f:b:p:
@@ -76,4 +76,5 @@ xcfasm \
   --sparse \
   --emit_pudc_b_pullup \
   --fn_in ${FASM} \
-  --bit_out ${BIT} ${FRM2BIT}
+  --bit_out ${BIT} \
+  "${FRM2BIT[@]}"
