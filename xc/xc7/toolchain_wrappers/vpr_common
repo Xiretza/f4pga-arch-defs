@@ -32,6 +32,10 @@ if [[ -z ${VPR_OPTIONS:+} ]]; then
        --check_rr_graph off
        --suppress_warnings "${OUT_NOISY_WARNINGS},sum_pin_class:check_unbuffered_edges:load_rr_indexed_data_T_values:check_rr_node:trans_per_R:check_route:set_rr_graph_tool_comment:calculate_average_switch"
      )
+else
+	# $VPR_OPTIONS can be passed in through the environment as a string, convert it to an array
+	# shellcheck disable=SC2128
+	read -ra VPR_OPTIONS <<<"$VPR_OPTIONS"
 fi
 
 function parse_args {
@@ -110,7 +114,6 @@ function parse_args {
      export PCF=$PCF
      export NET=$NET
      export SDC=$SDC
-     export VPR_OPTIONS="${VPR_OPTIONS[*]}"
 
      export ARCH_DIR=$(realpath "${SHARE_DIR_PATH}/arch/$DEVICE")
      export ARCH_DEF=${ARCH_DIR}/arch.timing.xml
