@@ -117,7 +117,7 @@ export OUT_FASM_EXTRA=${TOP}_fasm_extra.fasm
 
 LOG=${TOP}_synth.log
 
-if [[ -z "$SURELOG_CMD" ]]; then
+if [[ ${#SURELOG_CMD[@]} -eq 0 ]]; then
   yosys -p "tcl ${SYNTH_TCL_PATH}" -l $LOG ${VERILOG_FILES[*]}
 else
   yosys -p "plugin -i uhdm" -p "read_verilog_with_uhdm ${SURELOG_CMD[*]} ${VERILOG_FILES[*]}" -p "tcl ${SYNTH_TCL_PATH}" -l $LOG
